@@ -10,13 +10,13 @@ $(function() {
     return index
   }
 
-
   let mySwiper = new Swiper('.swiper-container', {
     direction: 'vertical', // 垂直切换
     loop: true,
     // initialSlide: 3,
     on: {
-      transitionEnd() { // this Swiper实例
+      transitionEnd() {
+        // this Swiper实例
         // console.log('fixed', this.getCurrent())
         // console.log('bug', this.activeIndex)
         let idx = this.getCurrent() // 0 1 2
@@ -28,33 +28,45 @@ $(function() {
 
         // 如果是第三屏 复用第二屏的样式 page1
         let arr = ['2', '3']
-        if (arr.includes((idx))) {
+        if (arr.includes(idx)) {
           idx = 1
         }
-        $slide.attr('id', `page${idx}`).siblings('.swiper-slide').attr('id', '')
+        $slide
+          .attr('id', `page${idx}`)
+          .siblings('.swiper-slide')
+          .attr('id', '')
       }
     }
   })
 
   let $music = $('#music')
+  // 微信中 audio自动播放问题
+  document.addEventListener(
+    'WeixinJSBridgeReady',
+    function() {
+      $music[0].play()
+    },
+    false
+  )
+
   let $bgm = $('#bgm')
   $bgm.on('click', function() {
-    if ($music[0].paused) { // paused播放状态  true暂停中 false播放中
+    if ($music[0].paused) {
+      // paused播放状态  true暂停中 false播放中
       $music[0].play()
       // $bgm.css('animationPlayState', 'running')
       // $bgm.css('webkitAnimationPlayState', 'running')
       $bgm.css({
-        'animationPlayState': 'running',
-        'webkitAnimationPlayState': 'running',
+        animationPlayState: 'running',
+        webkitAnimationPlayState: 'running'
       })
-
     } else {
       $music[0].pause()
       // $bgm.css('animationPlayState', 'paused')
       // $bgm.css('webkitAnimationPlayState', 'paused')
       $bgm.css({
-        'animationPlayState': 'paused',
-        'webkitAnimationPlayState': 'paused',
+        animationPlayState: 'paused',
+        webkitAnimationPlayState: 'paused'
       })
     }
   })
